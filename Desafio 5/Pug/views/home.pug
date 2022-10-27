@@ -1,0 +1,16 @@
+include includes/navbar.pug
+section
+        form(action="/productos" method="post")
+            div
+                label(for="name")  Nombre del producto
+                input(type="text" id="name" name="name")
+            
+            div(class="mb-3")
+                label(for="price") Precio del producto
+                input(type="number" id="price" name="price")
+            
+            div(class="mb-3")
+                label(for="thumbnail" ) Url de la imagen
+                input(type="text" id="thumbnail" name="thumbnail")
+            
+            button(type="submit") Enviar 

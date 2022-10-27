@@ -1,0 +1,26 @@
+include includes/navbar.pug   
+body
+    section
+        if products.length !== 0
+            table
+                thead
+                    tr
+                        th(scope="col") Id
+                        th(scope="col") Nombre
+                        th(scope="col") Precio
+                        th(scope="col") Imagen
+            
+                tbody
+                    each product in products
+                        tr
+                            th(scope="row")= product.id
+                            
+                            td= product.name
+                            
+                            td= product.price
+                            
+                            td
+                                img(src=product.thumbnail )
+        else
+            div 
+                p No hay productos
