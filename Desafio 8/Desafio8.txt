@@ -1,0 +1,116 @@
+
+--- Creamos la base de datos ecommerce ---
+
+use ecommerce
+
+--- Creamos la coleccion "mensajes" ---
+
+db.createCollection('mensajes')
+
+--- Creamos la coleccion "productos" ---
+
+db.createCollection('productos')
+
+
+--- Insertamos 10 mensajes con su respectivo formato a la coleccion de mensajes ---
+
+db.mensajes.insertMany([
+
+    {email:"email@gmail.com",mensaje:"Lorem ipsum",fecha: new Date().toLocaleString()},
+    {email:"email1@gmail.com",mensaje:"Lorem ipsum1",fecha: new Date().toLocaleString()},
+    {email:"email2@gmail.com",mensaje:"Lorem ipsum2",fecha: new Date().toLocaleString()},
+    {email:"email3@gmail.com",mensaje:"Lorem ipsum3",fecha: new Date().toLocaleString()},
+    {email:"email4@gmail.com",mensaje:"Lorem ipsum4",fecha: new Date().toLocaleString()},
+    {email:"email5@gmail.com",mensaje:"Lorem ipsum5",fecha: new Date().toLocaleString()},
+    {email:"email6@gmail.com",mensaje:"Lorem ipsum6",fecha: new Date().toLocaleString()},
+    {email:"email7@gmail.com",mensaje:"Lorem ipsum7",fecha: new Date().toLocaleString()},
+    {email:"email8@gmail.com",mensaje:"Lorem ipsum8",fecha: new Date().toLocaleString()},
+    {email:"email9@gmail.com",mensaje:"Lorem ipsum9",fecha: new Date().toLocaleString()},
+    {email:"email10@gmail.com",mensaje:"Lorem ipsum10",fecha: new Date().toLocaleString()}
+
+])
+
+
+--- Insertamos 10 productos con su respectivo formato a la coleccion de productos ---
+
+db.productos.insertMany([
+   
+{name:"Producto1", price:150,url:"https://wonder-day.com/wp-content/uploads/2020/10/wonder-day-among-us-png-29.png"},
+{name:"Producto2", price:230,url:"https://wonder-day.com/wp-content/uploads/2020/10/wonder-day-among-us-png-29.png"},
+{name:"Producto3", price:3500,url:"https://wonder-day.com/wp-content/uploads/2020/10/wonder-day-among-us-png-29.png"},
+{name:"Producto4", price:4200,url:"https://wonder-day.com/wp-content/uploads/2020/10/wonder-day-among-us-png-29.png"},
+{name:"Producto5", price:4950,url:"https://wonder-day.com/wp-content/uploads/2020/10/wonder-day-among-us-png-29.png"},
+{name:"Producto6", price:600,url:"https://wonder-day.com/wp-content/uploads/2020/10/wonder-day-among-us-png-29.png"},
+{name:"Producto7", price:700,url:"https://wonder-day.com/wp-content/uploads/2020/10/wonder-day-among-us-png-29.png"},
+{name:"Producto8", price:2000,url:"https://wonder-day.com/wp-content/uploads/2020/10/wonder-day-among-us-png-29.png"},
+{name:"Producto9", price:900,url:"https://wonder-day.com/wp-content/uploads/2020/10/wonder-day-among-us-png-29.png"},
+{name:"Producto10", price:3000,url:"https://wonder-day.com/wp-content/uploads/2020/10/wonder-day-among-us-png-29.png"}
+   
+])
+
+
+
+--- Listamos la coleccion de mensajes y la de productos ---
+
+db.productos.find()
+db.mensajes.find()
+
+
+--- Mostramos la cantidad de elementos que hay en cada una de las colecciones ---
+
+db.productos.estimatedDocumentCount()
+db.mensajes.estimatedDocumentCount()
+
+--- Agregamos un producto mas a la coleccion de productos ---
+
+db.productos.insertOne({name:"Producto11", price:1100,url:"https://wonder-day.com/wp-content/uploads/2020/10/wonder-day-among-us-png-29.png"})
+
+
+--- Listamos los productos cuyo precio es menor a 1000 ---
+
+db.productos.find({"price":{$lt:1000 }})
+
+
+--- Listamos los productos cuyo precio es entre 1000 y 3000 ---
+
+db.productos.find({$and : [{"price":{$gte:1000 }}, {"price":{$lte:3000}}]})
+
+
+--- Listamos los productos cuyo precio es mayor a 3000 ---
+
+db.productos.find({"price":{$gt:3000}})
+
+
+--- Trae el nombre del 3er producto mas barato ---
+
+db.products.find({}, { "name": 1, _id: 0 }).sort({"price": 1}).skip(2).limit(1)
+
+
+--- Actualizamos los productos y agregamos el campo stock con un valor de 100 ---
+
+db.productos.updateMany({}, { $set: { stock: 100 } })
+
+
+--- Cambiamos el stock a cero de los productos con precios mayores a 4000 ---
+
+db.productos.updateMany({ price: { $gt: 4000 } }, { $set: { stock: 0 } })
+
+
+--- Eliminamos los productos cuyo precio es menor a 1000 ---
+
+db.products.deleteMany({ price: { $lte: 1000 } })
+
+--- Creamos un usuario "pepe" con clave "asd456" de solo lectura ---
+
+db.createUser(
+  {
+    user: "pepe",
+    pwd: "asd456",
+    roles: [
+       { role: "read", db: "ecommerce" }
+    ]
+  }
+)
+
+  inicializamos de la siguiente manera: 
+    mongo -u pepe -p asd456
